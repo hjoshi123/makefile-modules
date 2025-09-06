@@ -46,6 +46,18 @@
       }
     },
     {
+      group: null,
+      matchDatasources: [
+        'golang-version',
+      ],
+      separateMinorPatch: true,
+      postUpgradeTasks: {
+        commands: [
+          'make learn-golang-shas',
+        ],
+      },
+    },
+    {
       groupName: 'Misc GitHub actions',
       matchManagers: [
         'github-actions',
