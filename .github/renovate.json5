@@ -6,7 +6,6 @@
     'Renovate Bot <renovate-bot@users.noreply.github.com>',
     'cert-manager-bot <cert-manager-bot@users.noreply.github.com>',
   ],
-  recreateWhen: 'always', // TODO: Remove; temporary fix to force Renovate to ignore "foreign" commits
   enabledManagers: [
     'custom.regex',
     'github-actions',
@@ -16,6 +15,7 @@
     'config:best-practices',
     ':gitSignOff',
     ':disableVulnerabilityAlerts',
+    ':rebaseStalePrs',
     ':prConcurrentLimit10', // Set a limit to avoid too many PRs, at least on the first run
     ':prHourlyLimitNone',
   ],
