@@ -46,7 +46,7 @@
       }
     },
     {
-      group: null,
+      groupName: null,
       matchDatasources: [
         'golang-version',
       ],
