@@ -67,6 +67,12 @@
         'digest',
       ],
       dependencyDashboardApproval: true
+    },
+    {
+      matchPackageNames: [
+        'github.com/inteon/go-licenses/**', // FIXME(inteon): See if we can get back to upstream go-licenses
+      ],
+      enabled: false,
     }
   ],
   ignorePaths: [
