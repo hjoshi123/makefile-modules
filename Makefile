@@ -63,10 +63,6 @@ include modules/tools/00_mod.mk
 
 ## Upgrade targets
 
-.PHONY: patch-go-version
-patch-go-version:
-	@./scripts/patch_go_version.sh
-
 .PHONY: upgrade-base-images
 upgrade-base-images: | $(NEEDS_CRANE)
 	@CRANE=$(CRANE) \
@@ -112,7 +108,6 @@ test-e2e:
 help: ## Show this help
 	@echo "Usage: make [target] ..."
 	@echo
-	@echo "make patch-go-version"
 	@echo "make upgrade-base-images"
 	@echo "make upgrade-kind-images"
 	@echo
