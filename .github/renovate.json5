@@ -1,24 +1,13 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
-  enabled: true,
-  gitAuthor: 'Renovate Bot <renovate-bot@users.noreply.github.com>',
-  gitIgnoredAuthors: [
-    '157150467+octo-sts[bot]@users.noreply.github.com',
+  extends: [
+    'github>cert-manager/renovate-config:default.json5',
   ],
   enabledManagers: [
     'custom.regex',
     'github-actions',
     'gomod',
   ],
-  extends: [
-    'config:best-practices',
-    ':gitSignOff',
-    ':disableVulnerabilityAlerts',
-    ':rebaseStalePrs',
-    ':prConcurrentLimit10', // Set a limit to avoid too many PRs, at least on the first run
-    ':prHourlyLimitNone',
-  ],
-  timezone: 'Europe/London',
   customManagers: [
     {
       customType: 'regex',
@@ -77,27 +66,14 @@
       },
     },
     {
-      groupName: 'Misc GitHub actions',
-      matchManagers: [
-        'github-actions',
-      ],
-    },
-    {
-      groupName: 'Misc Go deps',
-      matchManagers: [
-        'gomod',
-      ],
-    },
-    {
       matchManagers: [
         'custom.regex',
-        'gomod',
       ],
       matchUpdateTypes: [
         'major',
         'digest',
       ],
-      dependencyDashboardApproval: true
+      dependencyDashboardApproval: true,
     },
     {
       matchPackageNames: [
@@ -105,8 +81,5 @@
       ],
       enabled: false,
     }
-  ],
-  ignorePaths: [
-    '**/vendor/**',
   ],
 }
