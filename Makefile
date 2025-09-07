@@ -63,10 +63,6 @@ include modules/tools/00_mod.mk
 
 ## Upgrade targets
 
-.PHONY: patch-go-version
-patch-go-version:
-	@./scripts/patch_go_version.sh
-
 .PHONY: upgrade-base-images
 upgrade-base-images: | $(NEEDS_CRANE)
 	@CRANE=$(CRANE) \
@@ -93,6 +89,12 @@ learn-tools-shas: | $(NEEDS_CRANE)
 	@CRANE=$(CRANE) \
 		./scripts/learn_kind_images.sh
 
+# Learn the shas for the vendored Go version in the go module.
+# This must be run whenever the Go version is updated.
+.PHONY: learn-golang-shas
+learn-golang-shas:
+	./scripts/learn_tools_shas.sh _bin/tools/go
+
 .PHONY: learn-image-shas
 learn-image-shas: | $(NEEDS_CRANE)
 	@CRANE=$(CRANE) \
@@ -112,10 +114,10 @@ test-e2e:
 help: ## Show this help
 	@echo "Usage: make [target] ..."
 	@echo
-	@echo "make patch-go-version"
 	@echo "make upgrade-base-images"
 	@echo "make upgrade-kind-images"
 	@echo
+	@echo "make learn-golang-shas"
 	@echo "make learn-tools-shas"
 	@echo "make learn-image-shas"
 	@echo
