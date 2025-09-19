@@ -82,4 +82,8 @@
       enabled: false,
     }
   ],
+  // Override the default ignorePaths in the shared preset, as files are sourced from here.
+  ignorePaths: [
+    '**/vendor/**',
+  ]
 }
