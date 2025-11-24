@@ -48,7 +48,7 @@
       ],
       postUpgradeTasks: {
         commands: [
-          'make learn-image-shas',
+          'make vendor-go learn-image-shas',
         ],
         executionMode: 'branch',
       }
