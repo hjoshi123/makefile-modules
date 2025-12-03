@@ -77,7 +77,7 @@ tools += vault=v1.21.1
 tools += azwi=v1.5.1
 # https://github.com/kyverno/kyverno/releases
 # renovate: datasource=github-releases packageName=kyverno/kyverno
-tools += kyverno=v1.16.0
+tools += kyverno=v1.16.1
 # https://github.com/mikefarah/yq/releases
 # renovate: datasource=github-releases packageName=mikefarah/yq
 tools += yq=v4.49.2
@@ -89,7 +89,7 @@ tools += ko=0.18.0
 tools += protoc=v33.1
 # https://github.com/aquasecurity/trivy/releases
 # renovate: datasource=github-releases packageName=aquasecurity/trivy
-tools += trivy=v0.67.2
+tools += trivy=v0.68.1
 # https://github.com/vmware-tanzu/carvel-ytt/releases
 # renovate: datasource=github-releases packageName=vmware-tanzu/carvel-ytt
 tools += ytt=v0.52.1
@@ -118,7 +118,7 @@ tools += gotestsum=v1.13.0
 tools += kustomize=v5.8.0
 # https://pkg.go.dev/github.com/itchyny/gojq?tab=versions
 # renovate: datasource=go packageName=github.com/itchyny/gojq
-tools += gojq=v0.12.17
+tools += gojq=v0.12.18
 # https://pkg.go.dev/github.com/google/go-containerregistry/pkg/crane?tab=versions
 # renovate: datasource=go packageName=github.com/google/go-containerregistry
 tools += crane=v0.20.7
@@ -535,10 +535,10 @@ $(DOWNLOAD_DIR)/tools/kube-apiserver@$(KUBEBUILDER_ASSETS_VERSION)_$(HOST_OS)_$(
 	@source $(lock_script) $@; \
 		tar xfO $< controller-tools/envtest/kube-apiserver > $(outfile) && chmod 775 $(outfile)
 
-kyverno_linux_amd64_SHA256SUM=edb9ec84406704a39e6eced5089df2da75c81dde3d8422255af294bd5e0bc52f
-kyverno_linux_arm64_SHA256SUM=c7897ad466917f0c5a3cc5bb39142929388f739e20bb9e7e3cd422ef90214973
-kyverno_darwin_amd64_SHA256SUM=c6f7052569527498728d8c19551fa985378107c785391c6d601d1aa452bbb101
-kyverno_darwin_arm64_SHA256SUM=cac8aefd5de5e23431dc8f1a7d0acf8233ce66462446f23f2d5575cafedcf7b8
+kyverno_linux_amd64_SHA256SUM=0c0216e4c3bb535eaf94ea1c2e13e4d66f7be2ec6446c37aee6c3133650167e7
+kyverno_linux_arm64_SHA256SUM=c1d349a272c2adf1bc9d2caf23a354ff4edc10687664c7a04da6fb84ce502c20
+kyverno_darwin_amd64_SHA256SUM=7985d522952e88adf7f21058439099b0e27c099baab0589b3a501862daebe842
+kyverno_darwin_arm64_SHA256SUM=25a704a74683a3da5bb50cb9e7a11a4df686121674d1271f49c0261618c94f1d
 
 .PRECIOUS: $(DOWNLOAD_DIR)/tools/kyverno@$(KYVERNO_VERSION)_$(HOST_OS)_$(HOST_ARCH)
 $(DOWNLOAD_DIR)/tools/kyverno@$(KYVERNO_VERSION)_$(HOST_OS)_$(HOST_ARCH): | $(DOWNLOAD_DIR)/tools
@@ -597,10 +597,10 @@ $(DOWNLOAD_DIR)/tools/protoc@$(PROTOC_VERSION)_$(HOST_OS)_$(HOST_ARCH): | $(DOWN
 		chmod +x $(outfile); \
 		rm -f $(outfile).zip
 
-trivy_linux_amd64_SHA256SUM=546511a5514afc813c0b72e4abeea2c16a32228a13a1e5114d927c190e76b1f9
-trivy_linux_arm64_SHA256SUM=e4f28390b06cdaaed94f8c49cce2c4c847938b5188aefdeb82453f2e933e57cb
-trivy_darwin_amd64_SHA256SUM=4a5b936a8d89b508ecdc6edd65933b6fe3e9a368796cbdf917fd0df393f26542
-trivy_darwin_arm64_SHA256SUM=6b3163667f29fc608a2ed647c1bd42023af5779349286148190a168c5b3f28f1
+trivy_linux_amd64_SHA256SUM=63e37242088e418651931f891963c19554faa19f0591fe6b40b606152051df2f
+trivy_linux_arm64_SHA256SUM=b29ea550f573afbcae3c86fb2b5e0ebba76b7cb0965e3787c4e8cb884d2c1d57
+trivy_darwin_amd64_SHA256SUM=d5b5bd3b3c3626d223c3981cc40f4709f00a6327a681b588d2fc64a3aa9d02c5
+trivy_darwin_arm64_SHA256SUM=4dd3d2e74e1b6f6f7fd5fbf55489727698f586d6a6a0cff3421031a05b80bcac
 
 .PRECIOUS: $(DOWNLOAD_DIR)/tools/trivy@$(TRIVY_VERSION)_$(HOST_OS)_$(HOST_ARCH)
 $(DOWNLOAD_DIR)/tools/trivy@$(TRIVY_VERSION)_$(HOST_OS)_$(HOST_ARCH): | $(DOWNLOAD_DIR)/tools
