@@ -293,8 +293,8 @@ $(call uc,$1) := $$(CURDIR)/$$(bin_dir)/tools/$1
 
 # Create symlink from $(bin_dir)/tools/$1 to the versioned binary in $(DOWNLOAD_DIR)
 $$(bin_dir)/tools/$1: $$(bin_dir)/scratch/$(call uc,$1)_VERSION | $$(DOWNLOAD_DIR)/tools/$1@$$($(call uc,$1)_VERSION)_$$(HOST_OS)_$$(HOST_ARCH) $$(bin_dir)/tools
-	# cd into tools dir and create relative symlink (e.g., ../downloaded/tools/helm@v4.0.1_darwin_arm64)
-	# patsubst converts absolute path to relative by replacing $(bin_dir) with ..
+	@# cd into tools dir and create relative symlink (e.g., ../downloaded/tools/helm@v4.0.1_darwin_arm64)
+	@# patsubst converts absolute path to relative by replacing $(bin_dir) with ..
 	@cd $$(dir $$@) && $$(LN) $$(patsubst $$(bin_dir)/%,../%,$$(word 1,$$|)) $$(notdir $$@)
 	@touch $$@ # making sure the target of the symlink is newer than *_VERSION
 endef
@@ -364,14 +364,14 @@ which-go: | $(NEEDS_GO)
 	@echo "go binary used for above version information: $(GO)"
 
 $(bin_dir)/tools/go: $(bin_dir)/scratch/VENDORED_GO_VERSION | $(bin_dir)/tools/goroot $(bin_dir)/tools
-	# Create symlink to the go binary inside the goroot
+	@# Create symlink to the go binary inside the goroot
 	@cd $(dir $@) && $(LN) ./goroot/bin/go $(notdir $@)
 	@touch $@ # making sure the target of the symlink is newer than *_VERSION
 
 # The "_" in "_bin" prevents "go mod tidy" from trying to tidy the vendored goroot.
 $(bin_dir)/tools/goroot: $(bin_dir)/scratch/VENDORED_GO_VERSION | $(GOVENDOR_DIR)/go@$(VENDORED_GO_VERSION)_$(HOST_OS)_$(HOST_ARCH)/goroot $(bin_dir)/tools
-	# Create relative symlink from $(bin_dir)/tools/goroot to $(GOVENDOR_DIR)/...
-	# patsubst converts the absolute path to relative (e.g., ../../go_vendor/go@1.25.4_darwin_arm64/goroot)
+	@# Create relative symlink from $(bin_dir)/tools/goroot to $(GOVENDOR_DIR)/...
+	@# patsubst converts the absolute path to relative (e.g., ../../go_vendor/go@1.25.4_darwin_arm64/goroot)
 	@cd $(dir $@) && $(LN) $(patsubst $(bin_dir)/%,../%,$(word 1,$|)) $(notdir $@)
 	@touch $@ # making sure the target of the symlink is newer than *_VERSION
 
@@ -453,9 +453,9 @@ go_tool_names :=
 define go_dependency
 go_tool_names += $1
 $$(DOWNLOAD_DIR)/tools/$1@$($(call uc,$1)_VERSION)_$(HOST_OS)_$(HOST_ARCH): | $$(NEEDS_GO) $$(DOWNLOAD_DIR)/tools
-	# 1. Use lock script to prevent concurrent builds of the same tool
-	# 2. Install to temp dir using GOBIN, with GOWORK=off to ignore workspace files
-	# 3. Move the binary to final location
+	@# 1. Use lock script to prevent concurrent builds of the same tool
+	@# 2. Install to temp dir using GOBIN, with GOWORK=off to ignore workspace files
+	@# 3. Move the binary to final location
 	@source $$(lock_script) $$@; \
 		mkdir -p $$(outfile).dir; \
 		GOWORK=off GOBIN=$$(outfile).dir $$(GO) install --tags "$(strip $(go_tags_$1))" $2@$($(call uc,$1)_VERSION); \
@@ -556,12 +556,12 @@ $(DOWNLOAD_DIR)/tools/kubebuilder_tools_$(KUBEBUILDER_ASSETS_VERSION)_$(HOST_OS)
 		$(checkhash_script) $(outfile) $(kubebuilder_tools_$(HOST_OS)_$(HOST_ARCH)_SHA256SUM)
 
 $(DOWNLOAD_DIR)/tools/etcd@$(KUBEBUILDER_ASSETS_VERSION)_$(HOST_OS)_$(HOST_ARCH): $(DOWNLOAD_DIR)/tools/kubebuilder_tools_$(KUBEBUILDER_ASSETS_VERSION)_$(HOST_OS)_$(HOST_ARCH).tar.gz | $(DOWNLOAD_DIR)/tools
-	# Extract specific file from tarball using tar's -O flag (output to stdout)
+	@# Extract specific file from tarball using tar's -O flag (output to stdout)
 	@source $(lock_script) $@; \
 		tar xfO $< controller-tools/envtest/etcd > $(outfile) && chmod 775 $(outfile)
 
 $(DOWNLOAD_DIR)/tools/kube-apiserver@$(KUBEBUILDER_ASSETS_VERSION)_$(HOST_OS)_$(HOST_ARCH): $(DOWNLOAD_DIR)/tools/kubebuilder_tools_$(KUBEBUILDER_ASSETS_VERSION)_$(HOST_OS)_$(HOST_ARCH).tar.gz | $(DOWNLOAD_DIR)/tools
-	# Extract specific file from tarball using tar's -O flag (output to stdout)
+	@# Extract specific file from tarball using tar's -O flag (output to stdout)
 	@source $(lock_script) $@; \
 		tar xfO $< controller-tools/envtest/kube-apiserver > $(outfile) && chmod 775 $(outfile)
 
@@ -572,7 +572,7 @@ kyverno_darwin_arm64_SHA256SUM=25a704a74683a3da5bb50cb9e7a11a4df686121674d1271f4
 
 .PRECIOUS: $(DOWNLOAD_DIR)/tools/kyverno@$(KYVERNO_VERSION)_$(HOST_OS)_$(HOST_ARCH)
 $(DOWNLOAD_DIR)/tools/kyverno@$(KYVERNO_VERSION)_$(HOST_OS)_$(HOST_ARCH): | $(DOWNLOAD_DIR)/tools
-	# Kyverno uses x86_64 instead of amd64 in download URLs, so translate the architecture
+	@# Kyverno uses x86_64 instead of amd64 in download URLs, so translate the architecture
 	$(eval ARCH := $(subst amd64,x86_64,$(HOST_ARCH)))
 
 	@source $(lock_script) $@; \
@@ -601,7 +601,7 @@ ko_darwin_arm64_SHA256SUM=2efa5796986e38994a3a233641b98404fa071a76456e3c99b3c00d
 
 .PRECIOUS: $(DOWNLOAD_DIR)/tools/ko@$(KO_VERSION)_$(HOST_OS)_$(HOST_ARCH)
 $(DOWNLOAD_DIR)/tools/ko@$(KO_VERSION)_$(HOST_OS)_$(HOST_ARCH): | $(DOWNLOAD_DIR)/tools
-	# Ko uses capitalized OS names (Linux/Darwin) and x86_64 instead of amd64
+	@# Ko uses capitalized OS names (Linux/Darwin) and x86_64 instead of amd64
 	$(eval OS := $(subst linux,Linux,$(subst darwin,Darwin,$(HOST_OS))))
 	$(eval ARCH := $(subst amd64,x86_64,$(HOST_ARCH)))
 
@@ -619,7 +619,7 @@ protoc_darwin_arm64_SHA256SUM=db7e66ff7f9080614d0f5505a6b0ac488cf89a15621b6a3616
 
 .PRECIOUS: $(DOWNLOAD_DIR)/tools/protoc@$(PROTOC_VERSION)_$(HOST_OS)_$(HOST_ARCH)
 $(DOWNLOAD_DIR)/tools/protoc@$(PROTOC_VERSION)_$(HOST_OS)_$(HOST_ARCH): | $(DOWNLOAD_DIR)/tools
-	# Protoc uses different naming: darwin->osx, amd64->x86_64, arm64->aarch_64
+	@# Protoc uses different naming: darwin->osx, amd64->x86_64, arm64->aarch_64
 	$(eval OS := $(subst darwin,osx,$(HOST_OS)))
 	$(eval ARCH := $(subst arm64,aarch_64,$(subst amd64,x86_64,$(HOST_ARCH))))
 
@@ -637,7 +637,7 @@ trivy_darwin_arm64_SHA256SUM=4dd3d2e74e1b6f6f7fd5fbf55489727698f586d6a6a0cff3421
 
 .PRECIOUS: $(DOWNLOAD_DIR)/tools/trivy@$(TRIVY_VERSION)_$(HOST_OS)_$(HOST_ARCH)
 $(DOWNLOAD_DIR)/tools/trivy@$(TRIVY_VERSION)_$(HOST_OS)_$(HOST_ARCH): | $(DOWNLOAD_DIR)/tools
-	# Trivy uses unusual naming: Linux/macOS for OS, 64bit/ARM64 for architecture
+	@# Trivy uses unusual naming: Linux/macOS for OS, 64bit/ARM64 for architecture
 	$(eval OS := $(subst linux,Linux,$(subst darwin,macOS,$(HOST_OS))))
 	$(eval ARCH := $(subst amd64,64bit,$(subst arm64,ARM64,$(HOST_ARCH))))
 
@@ -667,7 +667,7 @@ rclone_darwin_arm64_SHA256SUM=8396a06f793668da6cf0d8cf2e6a2da4c971bcbc7584286ffd
 
 .PRECIOUS: $(DOWNLOAD_DIR)/tools/rclone@$(RCLONE_VERSION)_$(HOST_OS)_$(HOST_ARCH)
 $(DOWNLOAD_DIR)/tools/rclone@$(RCLONE_VERSION)_$(HOST_OS)_$(HOST_ARCH): | $(DOWNLOAD_DIR)/tools
-	# Rclone uses "osx" instead of "darwin" in download URLs
+	@# Rclone uses "osx" instead of "darwin" in download URLs
 	$(eval OS := $(subst darwin,osx,$(HOST_OS)))
 
 	@source $(lock_script) $@; \
@@ -684,7 +684,7 @@ istioctl_darwin_arm64_SHA256SUM=593f8d58571ff4cddcd069041d2c398da4e0d6fc80558907
 
 .PRECIOUS: $(DOWNLOAD_DIR)/tools/istioctl@$(ISTIOCTL_VERSION)_$(HOST_OS)_$(HOST_ARCH)
 $(DOWNLOAD_DIR)/tools/istioctl@$(ISTIOCTL_VERSION)_$(HOST_OS)_$(HOST_ARCH): | $(DOWNLOAD_DIR)/tools
-	# Istio uses "osx" instead of "darwin" in download URLs
+	@# Istio uses "osx" instead of "darwin" in download URLs
 	$(eval OS := $(subst darwin,osx,$(HOST_OS)))
 
 	@source $(lock_script) $@; \
