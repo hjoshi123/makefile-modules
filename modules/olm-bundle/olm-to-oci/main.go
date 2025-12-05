@@ -73,7 +73,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	err = os.WriteFile(oci+".digests", []byte(digest.String()), 0644)
+	err = os.WriteFile(oci+".digests", []byte(digest.String()), 0600)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Could not save OCI digests: %s", err)
 		os.Exit(1)

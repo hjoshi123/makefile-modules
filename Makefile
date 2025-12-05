@@ -66,8 +66,20 @@ bin_dir := _bin
 $(bin_dir) $(bin_dir)/scratch:
 	mkdir -p $@
 
-# Include the tools module Makefile, allowing us to download crane
+# Variables required by the included makefile-modules
+repo_name := github.com/cert-manager/makefile-modules # For `make generate-govulncheck`.
+golangci_lint_config := .golangci.yaml # For `make generate-golangci-lint-config`.
+# Modules that are used in this repo:
+# - tools: allows us to download crane
+# - generate-verify: to allow renovate to run make generate after updating the `go.mod` files in this repo.
+# - go: so that make go-tidy is triggered by make generate.
+#
+# Module files must be included in number order (00,01,02) to satisfy the
+# dependencies between them.
 include modules/tools/00_mod.mk
+include modules/generate-verify/00_mod.mk
+include modules/go/01_mod.mk
+include modules/generate-verify/02_mod.mk
 
 ## Upgrade targets
 
