@@ -69,7 +69,7 @@ tools :=
 tools += helm=v4.1.1
 # https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
 # renovate: datasource=github-releases packageName=kubernetes/kubernetes
-tools += kubectl=v1.35.0
+tools += kubectl=v1.35.1
 # https://github.com/kubernetes-sigs/kind/releases
 # renovate: datasource=github-releases packageName=kubernetes-sigs/kind
 tools += kind=v0.31.0
@@ -156,7 +156,7 @@ tools += klone=v0.2.0
 tools += goreleaser=v2.13.3
 # https://pkg.go.dev/github.com/anchore/syft/cmd/syft?tab=versions
 # renovate: datasource=go packageName=github.com/anchore/syft
-tools += syft=v1.41.2
+tools += syft=v1.42.0
 # https://github.com/cert-manager/helm-tool/releases
 # renovate: datasource=github-releases packageName=cert-manager/helm-tool
 tools += helm-tool=v0.5.3
@@ -493,10 +493,10 @@ $(DOWNLOAD_DIR)/tools/helm@$(HELM_VERSION)_$(HOST_OS)_$(HOST_ARCH): | $(DOWNLOAD
 		chmod +x $(outfile); \
 		rm -f $(outfile).tar.gz
 
-kubectl_linux_amd64_SHA256SUM=a2e984a18a0c063279d692533031c1eff93a262afcc0afdc517375432d060989
-kubectl_linux_arm64_SHA256SUM=58f82f9fe796c375c5c4b8439850b0f3f4d401a52434052f2df46035a8789e25
-kubectl_darwin_amd64_SHA256SUM=2447cb78911b10a667202b078eeb30541ec78d1280c3682921dc81607e148d96
-kubectl_darwin_arm64_SHA256SUM=cf699c56340dc775230fde4ef84237d27563ea6ef52164c7d078072b586c3918
+kubectl_linux_amd64_SHA256SUM=36e2f4ac66259232341dd7866952d64a958846470f6a9a6a813b9117bd965207
+kubectl_linux_arm64_SHA256SUM=706256e21a4e9192ee62d1a007ac0bfcff2b0b26e92cc7baad487a6a5d08ff82
+kubectl_darwin_amd64_SHA256SUM=07a04d82bc2de2f5d53dfd81f2109ca864f634a82b225257daa2f9c2db15ccef
+kubectl_darwin_arm64_SHA256SUM=2b000dded317319b1ebca19c2bc70f772c7aaa0e8962fae2d987ba04dd1a1b50
 
 .PRECIOUS: $(DOWNLOAD_DIR)/tools/kubectl@$(KUBECTL_VERSION)_$(HOST_OS)_$(HOST_ARCH)
 $(DOWNLOAD_DIR)/tools/kubectl@$(KUBECTL_VERSION)_$(HOST_OS)_$(HOST_ARCH): | $(DOWNLOAD_DIR)/tools
